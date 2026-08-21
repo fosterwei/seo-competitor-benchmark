@@ -53,8 +53,8 @@
 最低可发布版本包含：
 
 1. 首页
-2. 4 个主题中心页：Nail Art、Nail Colors、Seasonal Nails、Pedicure
-3. 3 个筛选/主题页：Short Nails、French Tips、Almond Nails
+2. 5 个 Pillar 中心页：Nail Design Ideas、Nail Art & Techniques、Nail Colors、Nail Shapes & Lengths、Seasonal & Occasion Nails
+3. 3 个首批 Cluster 页：Short Nails、French Tip Nails、Summer Nails
 4. 12 篇长列表文章
 5. About 页面
 6. 作者 Profile 页面
@@ -182,11 +182,13 @@ Nail Colors
 
 ### 5.3 导航设计
 
-全局导航保持 4-6 个主入口：
+全局导航保持 5-6 个主入口；将 Latest、About 和搜索作为辅助入口，将 Pedicure 作为独立垂直入口而不是与颜色、形状平行的无限筛选器：
 
 - Latest
+- Nail Design Ideas
 - Nail Art
 - Nail Colors
+- Nail Shapes
 - Seasonal Nails
 - Pedicure
 - About
@@ -397,9 +399,300 @@ Home
 - staging 不会出现在生产 sitemap
 - 发布后可以在 Search Console 检查 URL 和富结果
 
-## 6. 内容模型
+## 6. 关键词、实体与 Topical Authority 架构
 
-### 6.1 文章字段
+### 6.1 研究口径和证据边界
+
+本项目的关键词架构应以美国英语 SERP 的实际重叠为最终依据，而不是只按词面相似度分组。当前公开调研能确认的信号包括：
+
+- 用户和竞品内容反复围绕 `nail ideas`、`nail designs`、`nail art`、`summer nails`、`French tip nails`、`short nails`、`almond nails`、`coffin nails`、颜色和场景词组织内容。
+- 近期公开搜索结果显示，`short summer nails`、`summer French tip nails` 和 `simple summer nails` 会形成高度相邻但不完全相同的页面意图；短甲、季节和 French tip 更适合作为交叉实体，而不是全部变成同级栏目。可参考 [Short Summer French Tip Nails](https://parisfy.com/short-summer-french-tip-nails/) 和 [Simple Short Summer Nails](https://ideasnail.com/simple-short-summer-nails/)。
+- 趋势媒体会把颜色、质感、技法和季节组合成新的设计实体，例如 chrome、aura、micro-French、metallic、butter yellow 等；这些词适合进入 Cluster 或 Post，只有稳定形成独立意图后才升级为 Pillar。可参考 [夏末 French tip 趋势](https://www.whowhatwear.com/beauty/nails/august-french-tip-nail-ideas-2026) 和 [金属质感美甲趋势](https://www.marieclaire.com/beauty/nails/best-metallic-nails/)。
+
+没有 DataForSEO、Ahrefs、GSC 或 Google Ads Keyword Planner 数据时，不要填写虚构搜索量、难度或流量预测。先使用“候选主题”，上线后通过 Search Console 展示词、点击和 SERP 重叠复核，再决定扩展或合并。
+
+### 6.2 实体模型
+
+网站应围绕以下实体建立统一词汇，而不是围绕任意关键词堆页面：
+
+| 实体 | 说明 | 典型属性 | 关系 |
+|---|---|---|---|
+| NailDesign | 一套具体美甲设计 | name、image、palette、style | hasColor、usesTechnique、fitsShape |
+| NailArtStyle | 视觉风格或技法 | French tip、aura、chrome、marble | appliedToDesign |
+| NailColor | 颜色或色系 | red、pink、blue、nude、green | appearsInDesign |
+| Finish | 表面质感 | glossy、matte、glitter、metallic、velvet | modifiesDesign |
+| NailShape | 甲型 | almond、coffin、square、oval、stiletto | fitsLength |
+| NailLength | 长度 | short、medium、long | constrainsTechnique |
+| Season | 时间/季节 | spring、summer、fall、winter、Christmas | inspiresDesign |
+| Occasion | 使用场景 | vacation、wedding、prom、office、date night | suitableForDesign |
+| SkillLevel | 执行难度 | beginner、intermediate、professional | affectsHowTo |
+| ProductTool | 工具或产品类别 | gel、polish、brush、sticker、chrome powder | usedForHowTo |
+| Creator | 作者或被授权创作者 | name、profile、rights | createdOrContributed |
+| ManicurePedicure | 手部或脚部内容 | fingernail、toenail、matching set | relatedToDesign |
+
+页面标题可以包含多个实体，但每个可索引页面必须指定一个 primary entity 和一个 dominant intent。例如：
+
+- `25 Short Summer French Tip Nails`：primary entity = NailDesign；dominant intent = visual inspiration/list
+- `What Nail Shape Is Best for Short Nails?`：primary entity = NailShape；dominant intent = informational guide
+- `Chrome Nail Designs`：primary entity = Finish/Technique；dominant intent = inspiration hub
+- `Matching Fingernail and Toenail Designs`：primary entity = ManicurePedicure；dominant intent = inspiration/list
+
+### 6.3 推荐的 Pillar 层级
+
+首版只建立 5 个可索引 Pillar，避免分类数量过多：
+
+| Pillar | 核心主题 | 主要实体 | 适合承接的词群 |
+|---|---|---|---|
+| Nail Design Ideas | 全站核心入口 | NailDesign | nail ideas、nail designs、manicure ideas、nail inspiration |
+| Nail Art & Techniques | 风格和技法 | NailArtStyle、Finish | nail art、French tip、aura、chrome、marble、glitter |
+| Nail Colors | 颜色和质感 | NailColor、Finish | red nails、pink nails、blue nails、nude nails、metallic nails |
+| Nail Shapes & Lengths | 形状和长度 | NailShape、NailLength | short nails、almond nails、coffin nails、square nails |
+| Seasonal & Occasion Nails | 时间和场景 | Season、Occasion | summer nails、Christmas nails、vacation nails、wedding nails |
+
+`Pedicure` 可以作为独立导航入口，但在首版不建议把它和手部美甲完全混入同一个分类树。它应作为一个业务/内容垂直主题，内部连接到 `Matching Mani-Pedi`、`Toe Nail Designs` 和季节场景页面。
+
+### 6.4 Pillar → Cluster → Post 规划
+
+以下是首批可执行的候选架构。它是内容规划起点，不是最终关键词排名承诺。
+
+#### Pillar A：Nail Design Ideas
+
+Cluster：
+
+- `Simple Nail Ideas`
+- `Cute Nail Ideas`
+- `Classy Nail Ideas`
+- `Nail Ideas for Beginners`
+
+Post 示例：
+
+- `25 Simple Nail Designs That Look Expensive`
+- `30 Cute Nail Ideas for Short Nails`
+- `20 Classy Nail Designs for Every Occasion`
+- `Easy Nail Art Ideas You Can Do at Home`
+
+页面职责：覆盖最宽的灵感需求，链接到所有其他 Pillar；不要让它与 `Nail Art & Techniques` 的具体技法页重复。
+
+#### Pillar B：Nail Art & Techniques
+
+Cluster：
+
+- `French Tip Nails`
+- `Aura Nails`
+- `Chrome and Metallic Nails`
+- `Marble, Floral, and Abstract Nails`
+
+Post 示例：
+
+- `25 Colored French Tip Nail Designs`
+- `Short French Tip Nails for Everyday Wear`
+- `Aura Nail Designs in Pink, Blue, and Neutral Tones`
+- `Chrome Nail Ideas from Minimal to Statement`
+- `Simple Marble Nail Art for Beginners`
+
+页面职责：解释技法和视觉风格；同一技法的颜色或季节变化进入 Post，不再重复建立多个同义 Pillar。
+
+#### Pillar C：Nail Colors
+
+Cluster：
+
+- `Red and Pink Nails`
+- `Blue, Green, and Yellow Nails`
+- `Black, White, and Nude Nails`
+- `Chrome, Glitter, and Metallic Finishes`
+
+Post 示例：
+
+- `25 Red Nail Designs from Classic to Modern`
+- `Pink Nail Ideas for Short and Almond Nails`
+- `Blue Summer Nail Designs to Save`
+- `Nude Nail Ideas with French Tips and Chrome`
+- `Glitter Nail Designs for Day-to-Night Looks`
+
+页面职责：围绕颜色实体组织设计，不为每一种颜色和每一种季节组合自动建页。只有 SERP 意图明显独立、内容足够深时才建立静态页面。
+
+#### Pillar D：Nail Shapes & Lengths
+
+Cluster：
+
+- `Short Nails`
+- `Almond Nails`
+- `Coffin/Ballerina Nails`
+- `Square, Oval, and Stiletto Nails`
+
+Post 示例：
+
+- `Short Nail Designs That Do Not Need Length`
+- `Almond Nail Ideas for Every Season`
+- `Coffin Nail Designs from Simple to Bold`
+- `Best Nail Shapes for Short Nail Beds`
+- `Short vs Almond vs Coffin Nails: Choosing a Shape`
+
+页面职责：解决选择和适配问题。形状页应提供长度、甲床、维护、场景和设计限制等实用信息，不能只做图片清单。
+
+#### Pillar E：Seasonal & Occasion Nails
+
+Cluster：
+
+- `Spring Nails`
+- `Summer Nails`
+- `Fall and Winter Nails`
+- `Holiday and Event Nails`
+
+Post 示例：
+
+- `25 Summer Nail Designs from Simple to Bold`
+- `Short Summer French Tip Nails`
+- `Spring Floral Nail Designs`
+- `Fall Nail Colors and Designs`
+- `Christmas Nail Designs for Short Nails`
+- `Vacation Nail Ideas for Beach Trips`
+- `Wedding Nail Ideas for Brides and Guests`
+
+页面职责：承接季节和场景需求，并回链颜色、形状和技法实体。季节页采用长期 URL，按年份刷新，不重复生成 `/summer-nails-2027/` 这类近似页面。
+
+### 6.5 关键词到页面的分配规则
+
+#### Pillar page
+
+适合：宽泛实体词、总览型意图、需要继续分流的查询。
+
+- 目标长度：约 2,500-4,000 字
+- 内容：实体定义、子主题、筛选路径、精选文章、FAQ
+- 主关键词：一个宽泛实体主题
+- 内链：链接所有核心 Cluster，并从所有 Cluster 回链
+
+#### Cluster page
+
+适合：一个稳定的子主题，能承接多篇文章且有独立解释价值。
+
+- 目标长度：约 1,800-2,800 字
+- 内容：子主题简介、设计分类、选择建议、精选 Posts
+- 主关键词：一个子主题/风格/颜色/形状
+- 升级条件：至少 3-5 篇可互相支持的 Post，且 SERP 意图不等同于上级 Pillar
+
+#### Post page
+
+适合：单一长尾问题、列表、教程、比较或具体场景。
+
+- 灵感列表：1,200-1,800 字，设计条目必须有实用描述
+- 教程/解释：1,500-2,500 字，必须有步骤、限制和适用人群
+- 比较页：1,800-2,500 字，必须有明确决策标准
+- 每篇只设置一个 primary keyword，其他词作为自然变体
+
+### 6.6 SERP 重叠和蚕食判定
+
+对每组候选词执行实际 SERP 重叠检查：
+
+| 共同 Top 10 结果 | 判定 | 页面动作 |
+|---:|---|---|
+| 7-10 | 同一意图 | 合并为一个页面，覆盖多个变体 |
+| 4-6 | 同一主题集群 | 分成 Pillar/Cluster 或同集群 Posts |
+| 2-3 | 相邻主题 | 分开建页，并安排交叉内链 |
+| 0-1 | 意图不同 | 分到不同 Pillar，或暂不创建 |
+
+执行顺序：先按信息型、灵感列表型、比较型、教程型分组，再对同组候选词比较 Top 10 URL。不要只因两个词都含有 `nails` 就把它们合并，也不要只因词面不同就强行拆页。
+
+上线前必须检查：
+
+- 每个 Post 的 primary keyword 唯一
+- 同一实体和同一意图没有多个 URL
+- 组合词页有新增价值，而不是把 Pillar 标题换个顺序
+- 颜色、季节、形状的交叉页有独立用户问题
+- 没有因为标签、筛选参数和作者归档产生重复页面
+
+### 6.7 Topical Authority 的建设顺序
+
+不要从大量 Post 开始。推荐顺序：
+
+1. 先完成 `Nail Design Ideas` 核心 Pillar
+2. 建立 `Nail Art & Techniques` 和 `Nail Shapes & Lengths` 两个支撑 Pillar
+3. 每个 Pillar 发布 3-4 个 Cluster 页面
+4. 每个 Cluster 先发布 3 篇高质量 Post
+5. 补齐颜色、季节和场景交叉内容
+6. 根据 Search Console 的新查询和实际 SERP 重叠扩展
+7. 合并没有独立意图或没有获得展示的重复页面
+
+一个主题达到 topical authority 的最低内部标准：
+
+- 有 1 个清晰 Pillar
+- 有至少 3 个有独立意图的 Cluster
+- 每个 Cluster 至少 3 篇实质不同的 Post
+- 所有 Post 都有 Pillar 入链和回链
+- Post 之间有 2-3 个正文上下文内链
+- 页面覆盖定义、选择、做法、场景和限制，而不只是图片
+- 作者、图片权利和更新记录可追溯
+
+### 6.8 推荐首发 36 页
+
+首发不需要覆盖整个词库，先建立一个可验证的主题图：
+
+- 5 个 Pillar pages
+- 12 个 Cluster pages（每个 Pillar 2-3 个）
+- 19 个 Post pages
+
+建议首发 Posts：
+
+1. 25 Simple Nail Designs That Look Expensive
+2. 30 Cute Nail Ideas for Short Nails
+3. Easy Nail Art Ideas You Can Do at Home
+4. 25 Colored French Tip Nail Designs
+5. Short French Tip Nails for Everyday Wear
+6. Aura Nail Designs in Pink, Blue, and Neutral Tones
+7. Chrome Nail Ideas from Minimal to Statement
+8. 25 Red Nail Designs from Classic to Modern
+9. Pink Nail Ideas for Short and Almond Nails
+10. Blue Summer Nail Designs to Save
+11. Nude Nail Ideas with French Tips and Chrome
+12. Glitter Nail Designs for Day-to-Night Looks
+13. Short Nail Designs That Do Not Need Length
+14. Almond Nail Ideas for Every Season
+15. Coffin Nail Designs from Simple to Bold
+16. Best Nail Shapes for Short Nail Beds
+17. 25 Summer Nail Designs from Simple to Bold
+18. Short Summer French Tip Nails
+19. Spring Floral Nail Designs
+
+这些页面发布前仍需进行 SERP 重叠、关键词难度和内容差异验证。若两个候选词返回高度相同的页面，应合并，而不是为了达到页数目标拆成两篇。
+
+### 6.9 内链矩阵
+
+每个 Cluster 采用双向链接：
+
+| 来源 | 目标 | 必须性 | 锚文本示例 |
+|---|---|---|---|
+| Pillar | Cluster | 必须 | `French tip nail ideas` |
+| Cluster | Pillar | 必须 | `nail design ideas` |
+| Cluster | Post | 必须 | `short summer French tip nails` |
+| Post | Cluster | 必须 | `summer French nails` |
+| Post | 同 Cluster Post | 2-3 个 | `simple French tip designs` |
+| Post | 相邻 Cluster | 0-1 个 | `almond nail ideas` |
+
+所有 Post 应在正文中至少获得 3 个入链，并且在两次点击内可从首页或核心 Pillar 到达。不要只依赖侧边栏、标签或“最新文章”模块。
+
+### 6.10 关键词研究的持续更新机制
+
+每月从 Search Console 导出：
+
+- 有展示但没有点击的新查询
+- 多个 URL 同时获得展示的查询
+- 页面实际排名词与原始 primary keyword 的差异
+- 图片搜索带来的查询
+- 季节性词的同比变化
+
+每季度执行一次 SERP 重叠复核：
+
+1. 更新候选关键词表
+2. 合并重复意图
+3. 新增具有独立实体或场景的问题
+4. 修改 Pillar/Cluster 的内部链接
+5. 对长期没有展示的薄页进行合并、重写或 noindex
+
+不要用固定的“每月发布多少篇”衡量权威建设。更重要的指标是实体覆盖、意图覆盖、内部链接完整度、自然查询增长和页面之间的重复率。
+
+## 7. 内容模型
+
+### 7.1 文章字段
 
 每篇文章在 CMS 中至少有：
 
@@ -424,7 +717,7 @@ Home
 - Editorial status
 - Refresh date
 
-### 6.2 设计条目字段
+### 7.2 设计条目字段
 
 列表文章中的每个设计不要只有图片和一句形容词。至少写出：
 
@@ -438,7 +731,7 @@ Home
 - What makes the design distinctive
 - Image source and permission status
 
-### 6.3 内容矩阵
+### 7.3 内容矩阵
 
 用变量组合形成可扩展主题：
 
@@ -459,7 +752,7 @@ Home
 4. 是否值得新建 URL，还是应该更新中心页
 5. 需要哪些原创或授权图片
 
-### 6.4 文章模板
+### 7.4 文章模板
 
 ```text
 H1: 25 Short Summer Nail Ideas for 2026
@@ -487,7 +780,7 @@ Related:
 - Vacation Nail Ideas
 ```
 
-### 6.5 内容质量标准
+### 7.5 内容质量标准
 
 每篇文章发布前必须通过：
 
@@ -501,9 +794,9 @@ Related:
 - 图片版权状态为 approved
 - 页面首屏能快速展示内容主题
 
-## 7. 图片和版权流程
+## 8. 图片和版权流程
 
-### 7.1 图片来源优先级
+### 8.1 图片来源优先级
 
 按优先级使用：
 
@@ -524,7 +817,7 @@ Related:
 - 证据文件位置
 - 撤回或替换状态
 
-### 7.2 图片技术标准
+### 8.2 图片技术标准
 
 - 文件名描述主题，例如 `short-pink-french-tip-nails.webp`
 - alt 描述图片实际内容，不堆关键词
@@ -538,9 +831,9 @@ Related:
 
 Google 图片优化强调可抓取图片、描述性文件名、准确 alt、相关页面上下文和合理的 `og:image`。这些是上线检查项，不是可选装饰。
 
-## 8. SEO 实现
+## 9. SEO 实现
 
-### 8.1 基础技术 SEO
+### 9.1 基础技术 SEO
 
 上线前检查：
 
@@ -558,7 +851,7 @@ Google 图片优化强调可抓取图片、描述性文件名、准确 alt、相
 - 页面可在不依赖用户点击的情况下展示主要内容
 - 站点支持 RSS 或 Atom Feed
 
-### 8.2 Title 和 Meta 模板
+### 9.2 Title 和 Meta 模板
 
 Title 模板要具体，不要所有页面重复品牌名：
 
@@ -571,7 +864,7 @@ Title 模板要具体，不要所有页面重复品牌名：
 
 Meta description 说明内容范围和用户收益，不承诺无法证明的结果。Google 会综合 title、H1、页面文本和外部锚文本生成结果标题，因此页面视觉标题必须和 HTML title 语义一致。
 
-### 8.3 结构化数据
+### 9.3 结构化数据
 
 推荐：
 
@@ -591,7 +884,7 @@ Meta description 说明内容范围和用户收益，不承诺无法证明的结
 
 使用 Rich Results Test 和 Schema Markup Validator 验证。结构化数据只能让页面有资格获得更丰富展示，不能保证 Google 一定显示富结果。
 
-### 8.4 内链规则
+### 9.4 内链规则
 
 每篇文章至少链接到：
 
@@ -602,7 +895,7 @@ Meta description 说明内容范围和用户收益，不承诺无法证明的结
 
 锚文本描述目标页面，例如 `short summer nail ideas`，不要大量使用 `read more`。中心页要链接重要文章，重要文章也要回链中心页。
 
-### 8.5 季节页管理
+### 9.5 季节页管理
 
 推荐长期 URL：
 
@@ -621,9 +914,9 @@ Meta description 说明内容范围和用户收益，不承诺无法证明的结
 - 301 重定向废弃 URL
 - 更新首页和中心页的展示顺序
 
-## 9. 作者、信任和品牌
+## 10. 作者、信任和品牌
 
-### 9.1 作者实体
+### 10.1 作者实体
 
 作者页应包含：
 
@@ -638,7 +931,7 @@ Meta description 说明内容范围和用户收益，不承诺无法证明的结
 
 如果作者不是持证美甲师，应明确写“美甲爱好者/内容创作者”，不要暗示专业资质。涉及护理、安全、过敏和感染的问题，应引用权威来源或邀请专业人士审阅。
 
-### 9.2 About 页面
+### 10.2 About 页面
 
 About 页面回答：
 
@@ -651,7 +944,7 @@ About 页面回答：
 
 透明说明不是弱点；没有证据的专业包装才是风险。
 
-### 9.3 社交分发
+### 10.3 社交分发
 
 为每篇文章制作：
 
@@ -663,7 +956,7 @@ About 页面回答：
 
 社交平台的主要价值是传播、品牌搜索、访问和自然链接，不要把关注者数量直接当作 Google 排名指标。
 
-## 10. 本地 SEO边界
+## 11. 本地 SEO边界
 
 如果网站没有真实的门店或服务区域：
 
@@ -683,9 +976,9 @@ About 页面回答：
 
 Google 本地结果主要考虑相关性、距离和知名度，因此本地优化不能替代真实业务实体。
 
-## 11. 分析和监控
+## 12. 分析和监控
 
-### 11.1 必装工具
+### 12.1 必装工具
 
 - Google Search Console
 - Google Analytics 4
@@ -697,7 +990,7 @@ Google 本地结果主要考虑相关性、距离和知名度，因此本地优�
 - 图片压缩和版权记录工具
 - 邮件平台及 UTM 追踪
 
-### 11.2 事件设计
+### 12.2 事件设计
 
 GA4 至少记录：
 
@@ -711,7 +1004,7 @@ GA4 至少记录：
 - social_share
 - image_gallery_interaction
 
-### 11.3 每周检查
+### 12.3 每周检查
 
 - 新页面是否被发现
 - Search Console 新查询和页面
@@ -721,7 +1014,7 @@ GA4 至少记录：
 - 主要社交内容的点击和保存
 - 是否出现重复或近似选题
 
-### 11.4 每月检查
+### 12.4 每月检查
 
 - 页面按主题的展示、点击和 CTR
 - 有展示但低点击的 title/meta
@@ -732,9 +1025,9 @@ GA4 至少记录：
 - 外部链接和品牌提及
 - 需要合并、更新或删除的页面
 
-## 12. 发布流程
+## 13. 发布流程
 
-### 12.1 单篇文章流程
+### 13.1 单篇文章流程
 
 1. 选题去重
 2. 定义主搜索意图
@@ -751,7 +1044,7 @@ GA4 至少记录：
 13. 请求抓取并加入分发日历
 14. 30-60 天后根据数据更新
 
-### 12.2 发布前检查表
+### 13.2 发布前检查表
 
 - [ ] URL 唯一且短
 - [ ] Title 与 H1 清晰一致
@@ -768,7 +1061,7 @@ GA4 至少记录：
 - [ ] 404、sitemap、robots 无新错误
 - [ ] 文章已加入社交和邮件分发
 
-## 13. 30/60/90 天路线图
+## 14. 30/60/90 天路线图
 
 ### 第 1-30 天：打基础
 
@@ -804,7 +1097,7 @@ GA4 至少记录：
 - 输出第一次内容和 SEO 月报
 - 决定下一季度重点是内容规模、图片原创、品牌合作还是产品化
 
-## 14. 商业化顺序
+## 15. 商业化顺序
 
 在有稳定自然流量和清晰受众之前，不要堆叠广告。建议顺序：
 
@@ -817,7 +1110,7 @@ GA4 至少记录：
 
 每种商业化都要维护编辑独立性，不能为了佣金改变真实评价。
 
-## 15. 最终实施原则
+## 16. 最终实施原则
 
 优先建设可以长期积累的资产：
 
