@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Competitor Benchmark"
+  short_description: "Benchmark reusable SEO patterns and risks"
+  default_prompt: "Analyze this website for SEO patterns worth borrowing, risks to avoid, and an impact-versus-effort action plan."
