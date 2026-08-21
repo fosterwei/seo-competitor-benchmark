@@ -200,6 +200,203 @@ Nail Colors
 - 邮件订阅
 - 作者和品牌入口
 
+### 5.4 完整站点地图
+
+以下结构适合作为第一版产品和后续扩展的基准。括号内为页面的主要 SEO 或转化职责。
+
+```text
+/
+├── /latest/                         # 最新文章流
+├── /nail-art/                       # Nail Art 主题中心
+│   ├── /french-tip-nails/           # 技法/风格中心
+│   ├── /aura-nails/
+│   ├── /chrome-nails/
+│   ├── /marble-nails/
+│   └── /simple-nail-art/
+├── /nail-colors/                    # 颜色主题中心
+│   ├── /red-nails/
+│   ├── /pink-nails/
+│   ├── /blue-nails/
+│   ├── /green-nails/
+│   ├── /black-nails/
+│   └── /nude-nails/
+├── /seasonal-nails/                 # 季节主题中心
+│   ├── /spring-nails/
+│   ├── /summer-nails/
+│   ├── /fall-nails/
+│   ├── /winter-nails/
+│   └── /christmas-nails/
+├── /nail-shapes/                    # 甲型中心
+│   ├── /short-nails/
+│   ├── /almond-nails/
+│   ├── /coffin-nails/
+│   ├── /square-nails/
+│   └── /stiletto-nails/
+├── /occasions/                      # 场景中心
+│   ├── /vacation-nails/
+│   ├── /wedding-nails/
+│   ├── /prom-nails/
+│   └── /office-nails/
+├── /pedicure/                       # 脚部护理和搭配主题
+├── /posts/                          # 文章 URL 命名空间
+│   └── /short-summer-french-tip-nails/
+├── /author/                         # 作者实体
+│   └── /maria/
+├── /about/
+├── /contact/
+├── /image-rights/
+├── /privacy-policy/
+├── /terms/
+├── /search/                         # 站内搜索，默认 noindex
+└── /404/
+```
+
+不要一开始创建所有目录。只有当一个主题至少有 3-5 篇高质量文章、明确的搜索意图和独立的页面简介时，才把它升级为可索引中心页。
+
+### 5.5 页面职责和模块契约
+
+#### 首页 `/`
+
+目标：说明网站是什么、展示最新内容、把用户送到主题中心。
+
+模块顺序建议：
+
+1. Header、品牌名、主导航和搜索
+2. 简短 H1 和一句价值说明
+3. Featured article 或 Featured collection
+4. Browse by topic：4-6 个主题中心
+5. Latest posts：6-12 篇文章
+6. Browse by season/color/shape
+7. Newsletter signup
+8. About the creator
+9. Footer、隐私和版权链接
+
+首页不要使用大段营销文案或无法点击的装饰卡片。首屏应立即呈现品牌、真实美甲图片和可继续浏览的内容。
+
+#### 主题中心页 `/nail-art/`、`/summer-nails/`
+
+目标：解释主题、承接宽泛搜索、分发权重到子主题和文章。
+
+必须包含：
+
+- 唯一 H1 和 100-250 字简介
+- 主题相关的主图
+- 子主题导航
+- 8-24 篇精选文章
+- 按最新、热门或适用场景的排序方式
+- 面包屑
+- 相关中心页链接
+- 主题 FAQ（有真实问题时）
+
+中心页不应只是文章卡片列表。需要明确说明用户在这里能找到哪些设计、如何筛选，以及与相邻主题的区别。
+
+#### 文章页 `/posts/{slug}/`
+
+目标：完整解决一个具体搜索意图，并把用户引导到下一个相关主题。
+
+模块顺序建议：
+
+1. Breadcrumbs
+2. Category、H1、author、published/modified date
+3. Featured image
+4. Intro 和目录
+5. Design list，每个条目使用 H2/H3
+6. 实用选择建议或 DIY 说明
+7. FAQ（如果能降低用户决策成本）
+8. Related posts
+9. Newsletter CTA
+10. Author bio 和版权/来源说明
+
+文章模板必须支持 3-50 个设计条目，不应因条目数量改变布局或破坏目录。
+
+#### 作者页 `/author/{slug}/`
+
+目标：建立作者实体、聚合文章、说明经验边界。
+
+包含头像、简介、擅长主题、内容审核方式、代表文章和社交链接。作者页可以被索引，但内容不足时应暂缓发布或补齐实体信息。
+
+#### About、Contact、Image Rights
+
+About 解释品牌、作者和编辑原则；Contact 提供合作和纠错入口；Image Rights 解释图片来源、授权和侵权联系流程。这三页共同支撑信任和品牌实体，不是装饰页面。
+
+### 5.6 内容类型和数据关系
+
+建议在 CMS 中定义以下内容类型：
+
+| 内容类型 | 关键字段 | 关联对象 | 默认索引 |
+|---|---|---|---|
+| Post | 标题、摘要、设计条目、主图、作者、日期 | 主题、颜色、甲型、场景 | 是 |
+| Topic hub | 简介、主图、精选文章、子主题 | Post、Topic hub | 是 |
+| Author | 姓名、头像、简介、社交链接 | Post | 是，需完整 |
+| Design entry | 名称、颜色、甲型、难度、图片、授权 | Post | 否，嵌入文章 |
+| Image asset | 文件、alt、来源、许可、摄影者 | Post、Design entry | 通过图片出现 |
+| Redirect | 旧 URL、新 URL、原因 | Post、Topic hub | 否 |
+
+文章可以关联多个主题，但必须指定一个 primary topic。Primary topic 用于 breadcrumb、主内链和页面上下文，避免同一文章被多个分类模板重复渲染。
+
+### 5.7 URL、面包屑和规范化规则
+
+- 所有公开 URL 使用小写、连字符和尾部斜杠策略的一致版本。
+- 文章使用 `/posts/{descriptive-slug}/`；中心页使用短主题 slug。
+- 不把分类层级硬编码进文章 URL，避免文章换主题时产生大规模迁移。
+- 删除或合并页面时保留 301 映射，不直接返回软 404。
+- URL 参数用于站内筛选时默认 noindex；如果某个筛选组合有独立搜索价值，再建立静态中心页。
+- Breadcrumb 必须与用户可见导航和 canonical URL 一致。
+
+### 5.8 内链图和孤立页规则
+
+每个可索引文章至少具备以下入链：
+
+```text
+Home
+  -> Primary topic hub
+    -> Article
+      -> Related article
+      -> Secondary topic hub
+```
+
+发布前检查：
+
+- 新文章从至少一个中心页或专题页可达
+- 文章正文至少链接一个上级主题和两个相关文章
+- 中心页链接最重要的文章，而不是只显示最新文章
+- 季节、颜色、甲型和场景之间存在交叉链接
+- 没有只能通过站内搜索才能找到的孤立可索引页
+
+### 5.9 索引分层
+
+| 页面 | 可索引 | Sitemap | 说明 |
+|---|---|---|---|
+| 首页 | 是 | 是 | 品牌和主题入口 |
+| 主题中心 | 是 | 是 | 有独立简介和足够内容时 |
+| 文章页 | 是 | 是 | 规范 URL |
+| 作者页 | 视完整度 | 是/否 | 内容足够时建立作者实体 |
+| 标签页 | 通常否 | 否 | 避免薄内容和重复聚合 |
+| 站内搜索 | 否 | 否 | 防止参数 URL 膨胀 |
+| 分页 | 视实现 | 否 | 保持可爬取，但不必全部进 sitemap |
+| 草稿、预览、测试页 | 否 | 否 | 登录保护或 noindex |
+
+### 5.10 设计和开发验收标准
+
+设计验收：
+
+- 桌面和移动端都有稳定的 Header、导航和搜索入口
+- 首页首屏同时出现品牌、真实主图和下一段内容入口
+- 文章条目有稳定尺寸，图片加载不会推动文字跳动
+- 卡片不嵌套卡片，主题区块使用完整页面带或清晰网格
+- 文本、按钮和图片在小屏幕不重叠、不溢出
+- 颜色和字体对比度满足可读性要求
+
+开发验收：
+
+- 每种模板有唯一 title、H1、canonical 和结构化数据
+- 主题、作者、文章和图片字段可在 CMS 中独立维护
+- 文章条目数量变化不会破坏 CSS Grid 或目录
+- 相关内容组件按 primary/secondary topic 工作，不依赖手工硬编码
+- 删除、合并和改 slug 都能创建 301
+- staging 不会出现在生产 sitemap
+- 发布后可以在 Search Console 检查 URL 和富结果
+
 ## 6. 内容模型
 
 ### 6.1 文章字段
@@ -634,4 +831,3 @@ GA4 至少记录：
 - 与创作者的真实合作关系
 
 不要把“文章数量、社交账号数量或 Schema 数量”当作目标本身。真正的目标是让用户更快找到合适设计，并愿意继续浏览、订阅、分享和再次搜索品牌。
-
